@@ -17,7 +17,6 @@ public class ReadCommited extends BaseRepository {
     Connection tx2 = DriverManager.getConnection(URL, USER, PASS);
     tx1.setAutoCommit(false);
     tx2.setAutoCommit(false);
-    getStateDB();
 
     executorService.execute(
         () -> {
@@ -51,7 +50,6 @@ public class ReadCommited extends BaseRepository {
         () -> {
           try {
             Thread.sleep(5_000);
-            getStateDB();
           } catch (InterruptedException e) {
             throw new RuntimeException(e);
           }
