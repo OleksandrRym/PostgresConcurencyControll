@@ -1,4 +1,4 @@
-package com.rymar.concurency;
+package com.rymar.concurency.anomaly;
 
 import static java.lang.Thread.sleep;
 
@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 /// To demonstrate the non-repeatable read anomaly,
 /// set tx1 and tx2 to the Read Committed isolation level.
 ///
-public class RepeatableRead extends BaseRepository {
+public class NonRepeatableRead extends BaseRepository {
 
   private static final String SELECT_SQL = "SELECT * from examples";
   private static final String INSERT_SQL = "UPDATE examples SET x = 10 WHERE x = 5";
