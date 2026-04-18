@@ -24,6 +24,7 @@ public class NonRepeatableRead extends BaseRepository {
                   INSERT INTO examples (x) VALUES (5);
               """;
 
+
   @SneakyThrows
   public static void main(String[] args) {
     setupBaseRepo();
@@ -58,27 +59,38 @@ public class NonRepeatableRead extends BaseRepository {
     PreparedStatement s1 = tx1.prepareStatement(SELECT_SQL);
     ResultSet rs1 = s1.executeQuery();
     printResult(rs1);
-
+    printSnapshot(tx1);
     sleep(5000);
 
     ResultSet rs2 = s1.executeQuery();
     printResult(rs2);
+    printSnapshot(tx1);
     tx1.commit();
 
     System.out.println("TX1: Commit");
   }
 
   @SneakyThrows
-  private static void runTx2(Connection tx2) {
+  private static void runTx2(Connection tx) {
     sleep(1000);
 
     System.out.println("TX2: START");
 
-    PreparedStatement statement = tx2.prepareStatement(INSERT_SQL);
+    PreparedStatement statement = tx.prepareStatement(INSERT_SQL);
     statement.execute();
-    tx2.commit();
+    tx.commit();
 
     System.out.println("TX2: Commit");
+  }
+
+  @SneakyThrows
+  private static void printSnapshot(Connection tx) {
+    Statement stmt = tx.createStatement();
+    ResultSet rs = stmt.executeQuery("SELECT txid_current_snapshot();");
+    if (rs.next()) {
+      String snapshot = rs.getString(1);
+      System.out.println("Snapshot: " + snapshot);
+    }
   }
 
   @SneakyThrows
@@ -86,7 +98,7 @@ public class NonRepeatableRead extends BaseRepository {
     while (resultSet.next()) {
       int id = resultSet.getInt("id");
       int x = resultSet.getInt("x");
-      System.out.println("Tx 1: id = " + id + ", x = " + x);
+      System.out.print("id = " + id + ", x = " + x +"; ");
     }
   }
 }

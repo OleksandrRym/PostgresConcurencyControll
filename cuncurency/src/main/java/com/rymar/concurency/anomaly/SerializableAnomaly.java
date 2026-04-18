@@ -12,7 +12,7 @@ import lombok.SneakyThrows;
 ///
 /// Демонстрація SerializableAnomaly read аномалії
 ///
-/// У Cистемі підтримки має мати хоча б 1 активнтй NOC- engineer
+/// Бізнес-логіка: y системі підтримки має мати хоча б 1 активнтй NOC-engineer
 /// Для коректної логіки слід використовувати рівень TRANSACTION_SERIALIZABLE
 ///
 public class SerializableAnomaly extends BaseRepository {
